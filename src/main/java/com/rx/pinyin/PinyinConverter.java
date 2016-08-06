@@ -1,6 +1,8 @@
 package com.rx.pinyin;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.xml.bind.api.impl.NameConverter;
 import net.sourceforge.pinyin4j.PinyinHelper;
@@ -11,6 +13,7 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -145,7 +148,7 @@ public class PinyinConverter implements NameConverter {
                 if (token.contains("没收"))
                     return strings[1];
             case '重':
-                if (token.contains("重审") || token.contains("重新"))
+                if (token.contains("重审") || token.contains("重新") || token.contains("重整"))
                     return strings[1];
             default:
                 return strings[0];
@@ -217,8 +220,12 @@ public class PinyinConverter implements NameConverter {
 
     public Map load() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        tong = mapper.readValue(file, new TypeReference<Map<Character, Map<String, List<String>>>>() {
-        });
+        try {
+            tong = mapper.readValue(file, new TypeReference<Map<Character, Map<String, List<String>>>>() {
+            });
+        } catch (FileNotFoundException e) {
+            System.out.println("找不到同音字配置文件，可能需要手动输入");
+        }
         return tong;
     }
 

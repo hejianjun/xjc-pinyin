@@ -49,8 +49,6 @@ public class PinyinPlugin extends Plugin {
     public boolean run(Outline outline, Options opt, ErrorHandler errorHandler) throws SAXException {
         try {
             pc.save();
-        } catch (JsonProcessingException e) {
-            throw new SAXException(e);
         } catch (IOException e) {
             e.printStackTrace();
         }
