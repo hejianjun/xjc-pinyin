@@ -27,7 +27,7 @@ public class App
 
         XJC22Mojo xjcMojo = new XJC22Mojo();
         xjcMojo.setAddTestCompileSourceRoot(true); // this does nothing because we aren't referencing the main project
-        xjcMojo.setSchemaDirectory(new File("D:/xsd2"));
+        xjcMojo.setSchemaDirectory(new File("D:/xsd"));
         xjcMojo.setSchemaIncludes(new String[]{
                 "_00_结构_复用.xsd",
                 "_01_结构_刑事.xsd",

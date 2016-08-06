@@ -70,9 +70,8 @@ public class PinyinConverter implements NameConverter {
             return toHanyuPinyin(token, false);
         } else if (pingyin == 2) {
             return toHanyuPinyin(token, true);
-        } else {
-            return token.replace(".", "_");
         }
+        return token;
     }
 
     public String toHanyuPinyin(String token, boolean initial) {
@@ -87,13 +86,15 @@ public class PinyinConverter implements NameConverter {
             for (String s1 : list) {
                 if (initial) {
                     sb.append(s1.charAt(0));
+
                 } else {
                     char[] cs = s1.toCharArray();
-                    cs[0] -= 32;
+                    if (cs[0] > 'a' && cs[0] < 'z')
+                        cs[0] -= 32;
                     sb.append(String.valueOf(cs));
                 }
             }
-
+            sb.append(".");
         }
         return sb.toString();
     }
@@ -121,7 +122,7 @@ public class PinyinConverter implements NameConverter {
         if (strings.length > 1) {
             String pinyin = getTong(c, token);
             if (pinyin == null) {
-                pinyin = getUserTong(c, token, strings);
+                pinyin = getListTong(c, token, strings);
                 putTong(c, token, pinyin);
             }
             return pinyin;
